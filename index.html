@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Demo</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="js/main.js"></script>
+</head>
+<body>
+<canvas width="800" height="600" id="canvas">Canvas not supported</canvas>
+<img src="./src/boat.jpg" style="" id="img"/>
+<script>
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    //Using grid for now to have objects x,y reference
+    grid();
+    // Draw object to test some functions
+    draw();
+</script>
+</body>
+</html>
