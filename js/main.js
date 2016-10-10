@@ -17,9 +17,8 @@ let brickHeight = 20;
 let brickPadding = 10;
 let brickOffsetTop = 30;
 let brickOffsetLeft = 30;
-let defaultColourBrick = "#7FFF0";
 
-var bricks = [];
+let bricks = [];
 for(c=0; c<brickColumnCount; c++) {
     bricks[c] = [];
     for(r=0; r<brickRowCount; r++) {
@@ -28,6 +27,7 @@ for(c=0; c<brickColumnCount; c++) {
 }
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
+document.addEventListener("mousemove", mouseMoveHandler, false);
 
 function keyDownHandler(e) {
     if(e.keyCode == 39){
@@ -44,7 +44,12 @@ function keyUpHandler(e) {
         leftPressed = false;
     }
 }
-
+function mouseMoveHandler(e) {
+    let relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth/2;
+    }
+}
 
 function drawTheBall() {
     ctx.beginPath();
@@ -70,7 +75,7 @@ function drawBricks() {
             bricks[c][r].y = brickY;
             ctx.beginPath();
             ctx.rect(brickX, brickY, brickWidth, brickHeight);
-            ctx.fillStyle = defaultColourBrick;
+            ctx.fillStyle = "#7FFF0";
             ctx.fill();
             ctx.closePath();
         }
