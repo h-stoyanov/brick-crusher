@@ -1,13 +1,21 @@
-function draw() {
+let x = canvas.width/2;
+let y = canvas.height-30;
+let dx = 2;
+let dy = 2;
+
+function drawTheBall() {
     ctx.beginPath();
-    ctx.arc(75,75,50,0,Math.PI*2,true);
-    ctx.moveTo(110,75);
-    ctx.arc(75,75,35,0,Math.PI,false);
-    ctx.moveTo(65,65);
-    ctx.arc(60,65,5,0,Math.PI*2,true);
-    ctx.moveTo(95,65);
-    ctx.arc(90,65,5,0,Math.PI*2,true);
-    ctx.stroke();
+    ctx.arc(x, y, 10, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawTheBall();
+    x += dx;
+    y += dy;
 }
 
 function cls() {
@@ -47,3 +55,5 @@ function grid() {
 
     ctx.restore();
 }
+
+setInterval(draw, 10);
