@@ -17,6 +17,7 @@ let brickHeight = 20;
 let brickPadding = 10;
 let brickOffsetTop = 30;
 let brickOffsetLeft = 30;
+let score = 0;
 
 let bricks = [];
 for(c=0; c<brickColumnCount; c++) {
@@ -28,6 +29,7 @@ for(c=0; c<brickColumnCount; c++) {
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 document.addEventListener("mousemove", mouseMoveHandler, false);
+
 
 function keyDownHandler(e) {
     if(e.keyCode == 39){
@@ -63,6 +65,7 @@ function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
     ctx.fillStyle = '#0095DD';
+
     ctx.fill();
     ctx.closePath();
 }
@@ -81,12 +84,18 @@ function drawBricks() {
         }
     }
 }
+function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: "+ score, 8, 20);
+}
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks();
     drawTheBall();
     drawPaddle();
+    drawScore();
 
     if(x + dx > canvas.width - ballRadius || x + dx < ballRadius){
         dx = -dx;
