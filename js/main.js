@@ -28,7 +28,7 @@
     function mouseMoveHandler(e) {
         let relativeX = e.clientX - canvas.offsetLeft;
         if (relativeX > 0 && relativeX < canvas.width) {
-            paddle.x = relativeX - paddle.width/2;
+            paddle.x = relativeX - paddle.width / 2;
         }
     }
 
@@ -39,19 +39,19 @@
 
     let ball = {x: 0, y: 0, radius: 10, live: false, speed: 3};
     let dx = ball.speed, dy = ball.speed;
-    let paddle = {x: 400, y: canvas.height, height: 10, width: 85 };
+    let paddle = {x: 400, y: canvas.height, height: 10, width: 85};
     paddle.y = canvas.height - paddle.height;
     let rightPressed = false;
     let leftPressed = false;
-    let brickRowCount = 7;
-    let brickColumnCount = 9;
+    let brickRowCount = 6;
+    let brickColumnCount = 8;
     let brickWidth = 72;
     let brickHeight = 30;
-    let brickPadding = 1;
-    let brickOffsetTop = 100;
+    let brickPadding = 10;
+    let brickOffsetTop = 80;
     let brickOffsetLeft = 75;
     let score = 0;
-    ball.x = paddle.x + (paddle.width/2);
+    ball.x = paddle.x + (paddle.width / 2);
     ball.y = paddle.y - ball.radius;
 
     let bricks = [];
@@ -62,14 +62,13 @@
             let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
             bricks[c][r] = {x: brickX, y: brickY, strength: 1};
         }
-
     }
 
     function main() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        render();
         update();
+        render();
 
         requestAnimationFrame(main)
     }
@@ -85,7 +84,7 @@
                 if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
                     dy = -dy;
                 } else {
-                    //alert("GAME OVER");
+                    alert("GAME OVER");
                     document.location.reload();
                 }
             }
@@ -95,21 +94,57 @@
             } else if (leftPressed && paddle.x > 0) {
                 paddle.x -= 7;
             }
-            if (ball.live){
+            if (ball.live) {
                 ball.x += dx;
                 ball.y += dy;
             } else {
-                ball.x = paddle.x + (paddle.width/2);
+                ball.x = paddle.x + (paddle.width / 2);
                 ball.y = paddle.y - ball.radius;
             }
         }
 
         function brickUpdate() {
-            
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    let brick = bricks[c][r];
+                    // Collision detection with ball
+                    if (brick.strength > 0) {
+                        if (rectCircleColliding(ball, brick)) {
+                            bricks[c][r].strength--;
+                            dy = -dy;
+                        }
+                    }
+
+                }
+            }
         }
 
-        brickUpdate();
+        function rectCircleColliding(circle, rect) {
+
+            let distX = Math.abs(circle.x - rect.x - brickWidth / 2);
+            let distY = Math.abs(circle.y - rect.y - brickHeight / 2);
+
+            if (distX > (brickWidth / 2 + circle.radius)) {
+                return false;
+            }
+            if (distY > (brickHeight / 2 + circle.radius)) {
+                return false;
+            }
+
+            if (distX <= (brickWidth / 2)) {
+                return true;
+            }
+            if (distY <= (brickHeight / 2)) {
+                return true;
+            }
+
+            let dx = distX - brickWidth / 2;
+            let dy = distY - brickHeight / 2;
+            return (dx * dx + dy * dy <= (circle.radius * circle.radius));
+        }
+
         ballUpdate();
+        brickUpdate();
     }
 
     function render() {
@@ -182,8 +217,8 @@
         drawTheBall();
         drawPaddle();
         drawScore();
-        grid();
     }
+
     function cls() {
         ctx.clearRect(0, 0, 800, 600);
     }
@@ -194,7 +229,6 @@
         ctx.lineWidth = 1;
         ctx.lineCap = 'butt';
     }
-
 
 
     requestAnimationFrame(main);
