@@ -2,6 +2,7 @@ body{
     background-color: black;
 }
 #canvas {
+    /*background-image: url(../images/bg-body.jpg);*/
     background-color: white;
     border: 2px solid orange;
 }
