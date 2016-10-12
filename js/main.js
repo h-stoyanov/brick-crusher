@@ -37,7 +37,7 @@
             ball.live = true;
     }
 
-    let ball = {x: 0, y: 0, radius: 8, live: false, speed: 3};
+    let ball = {x: 0, y: 0, radius: 8, live: false, speed: 3.5};
     let dx = ball.speed, dy = ball.speed;
     let paddle = {x: 400, y: canvas.height, height: 10, width: 85};
     paddle.y = canvas.height - paddle.height;
