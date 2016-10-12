@@ -37,7 +37,7 @@
             ball.live = true;
     }
 
-    let ball = {x: 0, y: 0, radius: 10, live: false, speed: 3};
+    let ball = {x: 0, y: 0, radius: 8, live: false, speed: 3};
     let dx = ball.speed, dy = ball.speed;
     let paddle = {x: 400, y: canvas.height, height: 10, width: 85};
     paddle.y = canvas.height - paddle.height;
@@ -101,7 +101,7 @@
             }
             if (ball.y + dy < ball.radius) {
                 dy = -dy;
-            } else if (ball.y + dy > canvas.height - ball.radius) {
+            } else if (ball.y + dy + ball.radius > canvas.height) {
                 if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
                     dy = -dy;
                 } else {
@@ -140,7 +140,7 @@
                     // Collision detection with ball
                     if (brick.strength > 0) {
                         let check = rectCircleColliding(ball, brick);
-                        if (check == true) {
+                        if (check == 'x') {
                             bricks[c][r].strength--;
                             score++;
                             dy = -dy;
@@ -150,6 +150,12 @@
                             bricks[c][r].strength--;
                             score++;
                             dx = -dx;
+                            updateLives(score);
+                        }
+                        else if (check == 'corner') {
+                            bricks[c][r].strength--;
+                            score++;
+                            dx = -dx, dy = -dy;
                             updateLives(score);
                         }
                     }
@@ -175,7 +181,7 @@
             }
 
             if (distX <= (brickWidth / 2)) {
-                return true;
+                return 'x';
             }
             if (distY <= (brickHeight / 2)) {
                 return 'y';
@@ -183,7 +189,9 @@
 
             let dx = distX - brickWidth / 2;
             let dy = distY - brickHeight / 2;
-            return (dx * dx + dy * dy <= (circle.radius * circle.radius));
+            let corner = (dx * dx + dy * dy <= (circle.radius * circle.radius))
+            if (corner)
+                return 'corner';
         }
 
         ballUpdate();
