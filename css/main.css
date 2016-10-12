@@ -9,3 +9,19 @@ body{
 #img {
     display: none;
 }
+canvas{
+    position: relative;
+    -webkit-animation: canvasAnimation 5s;
+}
+
+@-webkit-keyframes canvasAnimation {
+    0% {-webkit-transform:rotate(90deg);left:0px;top:0px; }
+}
+
+@-webkit-keyframes canvasAnimation{
+    0%   {-webkit-transform: scale(0.2,0.3);}
+    25%   {-webkit-transform: scale(0.4,0.5);}
+    50%  {-webkit-transform: scale(0.6,0.7);}
+    75%  {-webkit-transform: scale(0.8,0.9);}
+    100%  { -webkit-transform: scale(0,0);}
+}
