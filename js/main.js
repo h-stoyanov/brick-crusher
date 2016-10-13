@@ -32,10 +32,6 @@
         }
     }
 
-    function mouseClickHandler() {
-        if (!ball.live)
-            ball.live = true;
-    }
 
     let ball = {x: 0, y: 0, radius: 8, live: false, speed: 3.5};
     let dx = ball.speed, dy = ball.speed;
@@ -56,6 +52,25 @@
     let level = 1;
     let lives = 3;
     let bricks = [];
+    let gameStarted = false;
+    let gameOver = false;
+    let win = false;
+
+    function mouseClickHandler() {
+        if (win) {
+            win = false;
+            document.location.reload();
+        }
+        else if (gameOver) {
+            gameOver = false;
+            document.location.reload();
+        }
+        else if (!gameStarted) {
+            gameStarted = true;
+        }
+        else if (!ball.live)
+            ball.live = true;
+    }
 
     function initBricksForLevel(level) {
         let levelData = getLevels(level);
@@ -71,8 +86,8 @@
                 }
             }
         } else {
-            alert('You win!');
-            document.location.reload();
+            win = true;
+            //document.location.reload();
         }
     }
 
@@ -106,8 +121,11 @@
                     dy = -dy;
                 } else {
                     if (lives <= 0) {
-                        alert("GAME OVER");
-                        document.location.reload();
+                        gameOver = true;
+                        lives = 3;
+                        level = 1;
+                        initBricksForLevel(level);
+                        //document.location.reload();
                     }
                     else {
                         lives--;
@@ -164,8 +182,8 @@
             }
             if (bricksLeft == 0) {
                 level++;
+                ball.speed += 0.2;
                 initBricksForLevel(level);
-
             }
         }
 
@@ -228,9 +246,9 @@
             ctx.restore();
         }
 
-        function drawText(text, x, y) {
+        function drawText(text, font, x, y) {
             ctx.save();
-            ctx.font = "18px Arial";
+            ctx.font = font;
             ctx.fillStyle = "#2eafff";
             ctx.fillText(text, x, y);
             ctx.restore()
@@ -291,13 +309,28 @@
             ctx.fill();
             ctx.closePath();
         }
+        if (win) {
+            drawText('You win!', '42px Arial', 310, 300);
+            drawText('Click to start again!', '36px Arial', 250, 340);
+            gameStarted = false;
+        }
+        else if (gameOver) {
+            drawText('Game Over!', '42px Arial', 300, 300);
+            drawText('Click to start again!', '36px Arial', 250, 340);
+            gameStarted = false;
+        }
+        else if (gameStarted) {
+            drawPaddle();
+            drawTheBall();
+            drawBricks();
+            drawText("Score: " + score, "18px Arial", 8, 20);
+            drawText("Level: " + level, "18px Arial", 8, 40);
+            drawText("Lives: " + lives, "18px Arial", 720, 20);
 
-        drawPaddle();
-        drawTheBall();
-        drawBricks();
-        drawText("Score: " + score, 8, 20);
-        drawText("Level: " + level, 8, 40);
-        drawText("Lives: " + lives, 720, 20);
+        } else {
+            drawText("Click to start!", "42px Arial", 300, 300);
+        }
+
     }
 
     function cls() {

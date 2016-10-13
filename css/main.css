@@ -9,7 +9,7 @@ body{
 #img {
     display: none;
 }
-canvas{
+/*canvas{
     position: relative;
     -webkit-animation: canvasAnimation 5s;
 }
@@ -25,3 +25,4 @@ canvas{
     75%  {-webkit-transform: scale(0.8,0.9);}
     100%  { -webkit-transform: scale(0,0);}
 }
+*/
